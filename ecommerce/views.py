@@ -1,24 +1,36 @@
-from django.shortcuts import render, get_object_or_404
-from ecommerce.models import Product
+from django.shortcuts import render, get_object_or_404, redirect  
+from .forms import ReviewForm
+from ecommerce.models import Product, ProductAttribute
 
 def product_list(request):
     products = Product.objects.all()
     context = {
-        'products' : products
+        'products': products,
     }
-    return render(request, 'e-commerce\product\product-list.html', context=context)
+    return render(request, 'e-commerce/product/product-list.html', context=context)
 
 def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk )
-    context = {
-        'product' : product
-    }
+    product = get_object_or_404(Product, pk=pk)
+    product_attributes = ProductAttribute.objects.filter(product=product)
+    reviews = product.reviews.all()
     
-    return render(request, 'e-commerce\product\product-details.html', context=context)
+    if request.method == "POST":
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.product = product
+            review.save()
+            return redirect('product_detail', pk=pk)  
 
-def customers(request):
-    return render(request, 'e-commerce\customers.html')
+    else:
+        form = ReviewForm()
 
-def custome_details(request):
-    return render(request, 'e-commerce\customer-details.html')
+    context = {
+        'product': product,
+        'product_attributes': product_attributes,
+        'reviews': reviews,
+        'form': form,
+    }
+
+    return render(request, 'e-commerce/product/product-details.html', context)
 
