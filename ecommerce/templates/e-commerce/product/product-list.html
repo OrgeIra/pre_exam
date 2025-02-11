@@ -1783,10 +1783,11 @@
                         <div class="col-lg-4 d-flex justify-content-between flex-column">
                           <div>
                             {% if  product.discount  %}
-                              <h5 class="fs--1 text-500 mb-0 mt-1">
+                            <h5 class="fs--1 text-500 mb-0 mt-1">
+                                <h4 class="fs-1 fs-md-2 text-warning mb-0">${{ product.discounted_price }}</h4>
                                 <del>${{ product.price }} </del><span class="ms-1">-{{ product.discount }}%</span>
                               </h5>
-                              <h4 class="fs-1 fs-md-2 text-warning mb-0">${{ product.dicounted_price }}</h4>
+                              
                             {% else %}
                               <h4 class="fs-1 fs-md-2 text-warning mb-0">${{ product.price }}</h4>
                             {% endif %}
@@ -1795,7 +1796,7 @@
                             </div>
                             <div class="d-none d-lg-block">
                               <p class="fs--1 mb-1">Shipping Cost: <strong>${{ product.shipping_costs }}</strong></p>
-                              <p class="fs--1 mb-1">Stock: <strong class="text-success">{{ product.stock }}</strong>
+                              <p class="fs--1 mb-1">Stock: <strong class="text-success">{%if product.stock == 1%} Available {% else %}Unavailable {% endif %}</strong>
                               </p>
                             </div>
                           </div>

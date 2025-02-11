@@ -10,12 +10,14 @@ class BaseModel(models.Model):
 
 class UserProfile(BaseModel):
     email = models.EmailField(unique=True)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)  # ✅ This field exists
     phone = models.PositiveIntegerField(default=0)
-    address = models.CharField(max_length=255 , default='Tashkent')
+    address = models.CharField(max_length=255, default='Tashkent')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    
+
 
     def __str__(self):
-        return self.name
+        return f"{self.first_name} {self.last_name}"
+
+    
